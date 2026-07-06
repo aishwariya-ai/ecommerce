@@ -9,9 +9,7 @@ export const useCartStore = defineStore("cart", {
     getters: {
         total(state) {
             return state.cart.reduce(
-                (sum, product) => sum + product.price,
-                0
-            );
+                (sum, product) => sum + product.price,0);
         },
 
         totalCount(state) {

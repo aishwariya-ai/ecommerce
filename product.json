@@ -71,13 +71,6 @@
       "password": "prem@123",
       "role": "admin",
       "id": 5
-    },
-    {
-      "username": "Varsha",
-      "email": "varsha@gmail.com",
-      "password": "varsha@123",
-      "role": "admin",
-      "id": 6
     }
   ],
   "cart": [
