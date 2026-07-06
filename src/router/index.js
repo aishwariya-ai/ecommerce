@@ -5,6 +5,7 @@ import Login from "../components/Login.vue";
 import Cart from "../components/Cart.vue";
 import ManageProduct from "../components/ManageProduct.vue";
 import Register from "../components/Register.vue";
+import Counter from "../components/counter.vue";
 const routes = 
 [
     {
@@ -33,6 +34,10 @@ const routes =
     {
         path:"/register",
         component:Register
+    },
+    {
+        path:'/counter',
+        component:Counter
     }
 ];
 const router = createRouter({

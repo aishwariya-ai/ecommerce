@@ -33,7 +33,7 @@ export const useProductStore = defineStore("product",{
 
         async addProduct(product)
          {
-            //product.id = this.products.length===0?1:Math.max(...this.products.map(p => p.id)) + 1;
+            product.id = this.products.length===0?1:Math.max(...this.products.map(p => p.id)) + 1;
             const response= await api.post("/products",product);
             this.products.push(response.data)
             
