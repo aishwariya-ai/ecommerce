@@ -4,42 +4,37 @@
       "id": 1,
       "name": "Iphone-14",
       "category": "Mobile",
-      "price": 65000,
+      "price": 80000,
+      "brand": "Apple",
+      "description": "Apple iPhone 14 with A15 Bionic chip and 128GB storage.",
       "image": "/images/iphone.png"
     },
     {
-      "id": 2,
-      "name": "Samsung",
-      "category": "Mobile",
-      "price": 90000,
-      "image": "/images/Samsung.png"
-    },
-    {
       "id": 3,
-      "name": "Dell laptop",
+      "name": "Dell Laptop",
       "category": "Laptop",
       "price": 70000,
+      "brand": "Dell",
+      "description": "Dell laptop featuring Intel Core processor, SSD storage, and Full HD display.",
       "image": "/images/dell.png"
     },
     {
       "id": 4,
       "name": "Buds",
-      "category": "Accesories",
+      "category": "Accessories",
       "price": 2500,
+      "brand": "Boat",
+      "description": "Wireless Bluetooth earbuds with noise cancellation and long battery life.",
       "image": "/images/buds.png"
     },
     {
       "id": 5,
       "name": "Sonata Watch",
-      "category": "Accesories",
-      "price": 1500,
+      "category": "Accessories",
+      "price": 2000,
+      "brand": "Sonata",
+      "description": "Stylish analog wristwatch suitable for daily wear with water resistance.",
       "image": "/images/Sonata.png"
-    },
-    {
-      "name": "Bottle",
-      "category": "Objetc",
-      "price": 250,
-      "id": 6
     }
   ],
   "users": [
@@ -84,84 +79,83 @@
       "password": "1234567890",
       "role": "user",
       "id": 6
+    },
+    {
+      "username": "Varsha",
+      "email": "varsha@gmail.com",
+      "password": "varsha@123",
+      "role": "user",
+      "id": 7
+    },
+    {
+      "username": "Karthick",
+      "email": "karthick@gmail.com",
+      "password": "karthick@123",
+      "role": "Admin",
+      "id": 8
+    },
+    {
+      "username": "Murugan",
+      "email": "murugan@gmail.com",
+      "password": "murugan@123",
+      "role": "admin",
+      "id": 9
     }
   ],
   "cart": [
     {
-      "id": 1,
-      "name": "Iphone-14",
-      "category": "Mobile",
-      "price": 65000,
-      "image": "/images/iphone.png"
-    },
-    {
-      "id": 2,
-      "name": "Samsung",
-      "category": "Mobile",
-      "price": 90000,
-      "image": "/images/Samsung.png"
-    },
-    {
-      "id": 5,
-      "name": "Sonata Watch",
-      "category": "Accesories",
-      "price": 1500,
-      "image": "/images/Sonata.png"
-    },
-    {
-      "userId": 1,
-      "productId": 1,
-      "name": "Iphone-14",
-      "price": 65000,
-      "quantity": 1,
-      "id": 6
-    },
-    {
-      "userId": 1,
-      "productId": 2,
-      "name": "Samsung",
-      "price": 90000,
-      "quantity": 1,
-      "id": 7
-    },
-    {
-      "userId": 1,
+      "userId": 5,
       "productId": 3,
       "name": "Dell laptop",
       "price": 70000,
       "quantity": 1,
-      "id": 8
+      "id": 9
     },
     {
-      "userId": 2,
+      "productId": 3,
+      "name": "Dell laptop",
+      "price": 70000,
+      "quantity": 1,
+      "id": 15
+    },
+    {
       "productId": 4,
       "name": "Buds",
       "price": 2500,
       "quantity": 1,
-      "id": 9
+      "id": 16
     },
     {
-      "userId": 2,
-      "productId": 5,
-      "name": "Sonata Watch",
-      "price": 1500,
+      "productId": 3,
+      "name": "Dell laptop",
+      "price": 70000,
       "quantity": 1,
-      "id": 10
+      "id": 21
     },
     {
+      "userId": 8,
       "productId": 1,
       "name": "Iphone-14",
-      "price": 65000,
-      "quantity": 1,
-      "id": 11
+      "price": 80000,
+      "quantity": 2,
+      "id": 24
     },
     {
-      "userId": 6,
+      "userId": 1,
       "productId": 1,
       "name": "Iphone-14",
-      "price": 65000,
+      "price": 80000,
       "quantity": 1,
-      "id": 12
+      "id": 25
+    },
+    {
+      "userId": 1,
+      "productId": 3,
+      "name": "Dell Laptop",
+      "price": 70000,
+      "quantity": 1,
+      "id": 26
     }
-  ]
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
 }

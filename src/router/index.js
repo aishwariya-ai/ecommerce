@@ -1,11 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "../stores/userStore";
-import Home from "../components/Home.vue";
-import Login from "../components/Login.vue";
-import Cart from "../components/Cart.vue";
-import ManageProduct from "../components/ManageProduct.vue";
-import Register from "../components/Register.vue";
-import Counter from "../components/counter.vue";
+import Home from "../views/HomeView.vue";
+import Login from "../views/LoginView.vue";
+import Cart from "../views/CartView.vue";
+import ManageProduct from "../views/ManageProductView.vue";
+import Register from "../views/RegisterView.vue";
 const routes = 
 [
     {
@@ -35,10 +34,6 @@ const routes =
         path:"/register",
         component:Register
     },
-    {
-        path:'/counter',
-        component:Counter
-    }
 ];
 const router = createRouter({
     history: createWebHistory(),
@@ -48,13 +43,13 @@ router.beforeEach((to, from, next) => {
 
     const userStore = useUserStore();
 
-    if (to.meta.requiresAuth&&!userStore.currentUser) 
+    if (to.meta.requiresAuth && !userStore.currentUser &&!token) 
       {
         next("/login");
     }
     else if (
-        to.meta.requiresAdmin && userStore.currentUser?.role !== "admin"
-    ) {
+        to.meta.requiresAdmin && userStore.currentUser?.role !== "admin" && !token)
+         {
         next("/");
     }
     else {

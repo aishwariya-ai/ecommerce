@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import api from '../api/api.js';
+import {useToast} from "vue-toastification";
+const toast=useToast();
 
 export const useProductStore = defineStore("product",{
     state:()=>({
@@ -7,38 +9,34 @@ export const useProductStore = defineStore("product",{
         search:"",
         sortBy:""
     }),
-    getters: {
-        filterproduct(state)
-        {
-            let filtered= [...state.products].filter(product=>
-                product.name.toLowerCase().includes(state.search.toLowerCase())
-            );
-        switch(state.sortBy)
-        {
-            case "priceLow":
-                return filtered.sort((a,b)=>a.price -b.price);
-            case "priceHigh":
-                return filtered.sort((a,b)=>b.price -a.price);
-            default:
-                return filtered;
-        }
-    }
-    },
+    getters: {},
     actions: {
         async getProducts()
         {
+            const cache=localStorage.getItem("products");
+            if(cache)
+            {
+                this.products=JSON.parse(cache);
+                console.log("Loaded from cache");
+            }
+            
+            console.log("Loaded via API")
             const response=await api.get("/products");
-            this.products=response.data
+            this.products=response.data;
+            localStorage.setItem("products",JSON.stringify(this.products));
+
+
         },
 
         async addProduct(product)
          {
-            product.id = this.products.length===0?1:Math.max(...this.products.map(p => p.id)) + 1;
+            product.id = this.products.length===0 ? 1 : String(Math.max(...this.products.map(p => Number(p.id))) + 1);
             const response= await api.post("/products",product);
             this.products.push(response.data)
+             toast.success("Product added!!!")
+
             
         },
-
         async updateProduct(updatedProduct) 
         {
 
@@ -51,14 +49,40 @@ export const useProductStore = defineStore("product",{
                 this.products[index].name = response.data.name;
                 this.products[index].category = response.data.category;
                 this.products[index].price = response.data.price;
+                this.products[index].brand = response.data.brand;
+                this.products[index].description = response.data.description;
+
             }
+             toast.success("Product updated!!!")
+
         },
         async deleteProduct(id) {
             await api.delete(`/products/${id}`);
             this.products = this.products.filter(
-                product => product.id !== id
-            );
+                product => product.id !== id);
+             toast.success("Product deleted!!!")
+
+        },
+        async fetchProducts()
+        {
+            let params={};
+            if(this.search)
+            {
+                params.name_like=this.search;
+            }
+            switch(this.sortBy)
+            {
+                case 'priceLow':
+                    params._sort="price";
+                    params._order="asc";
+                    break;
+                case 'priceHigh':
+                    params._sort="price";
+                    params._order="desc";
+                    break;
+            }
+            const response=await api.get("/products",{params});
+            this.products=response.data;
         }
-        
     }
 });

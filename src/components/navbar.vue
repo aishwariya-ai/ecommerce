@@ -1,83 +1,149 @@
 <script setup>
+import { watch } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "../stores/userStore";
 import { useProductStore } from "../stores/productStore";
+import { useToast } from "vue-toastification";
+const toast=useToast();
+
 const router = useRouter();
 const userStore = useUserStore();
 const productStore = useProductStore();
-function goHome()
-{
-    router.push("/");
-}
-function goCart() 
-{
-    router.push("/cart");
-}
-function goLogin() 
-{
-    router.push("/login");
-}
-function goManageProduct() 
-{
-    router.push("/manageproduct");
-}
-function logout() 
-{
-    userStore.logout();
-    alert("Logged Out Successfully");
-    router.push("/");
 
+function goHome() {
+  router.push("/");
 }
+
+function goCart() {
+  router.push("/cart");
+}
+
+function goLogin() {
+  router.push("/login");
+}
+
+function goManageProduct() {
+  router.push("/manageproduct");
+}
+
+function logout() {
+  userStore.logout();
+  toast.success("Logged Out Successfully");
+  router.push("/");
+}
+
+function debounce(fn,delay)
+{
+  let timer;
+  return(...args)=>
+{
+console.log("Typing");
+clearTimeout(timer)
+timer=setTimeout(()=>
+{
+  fn(...args)
+},delay)
+}
+}
+const debouncedSearch=debounce(()=>{
+  console.log("Api called")
+  productStore.fetchProducts()
+},500);
+
+watch(
+  ()=>productStore.search,
+  ()=>{
+    debouncedSearch();
+  }
+);
+watch(
+  ()=>productStore.sortBy,
+  ()=>{
+    productStore.fetchProducts();
+  }
+);
+
 </script>
+
 <template>
-<nav class="navbar">
 
-    <div class="nav-links">
-        <button @click="goHome">Home</button>
-        <button @click="goCart">Cart</button>
+  <v-app-bar
+    color="primary"
+  >
+    <v-toolbar-title
+      class="font-weight-bold"
+      style="cursor:pointer"
+      @click="goHome" >Product Management</v-toolbar-title>
 
-        <button
-            v-if="userStore.currentUser?.role==='admin'"
-            @click="goManageProduct">
-            Manage Products
-        </button>
-    </div>
+    <v-btn variant="text" @click="goHome">Home</v-btn>
 
-    <div class="nav-search">
+    <v-btn
+      variant="text"
+      @click="goCart">
+      Cart</v-btn>
 
-        <input
-            type="text"
-            placeholder="Search products"
-            v-model="productStore.search"
-        >
+    <v-btn
+      v-if="userStore.currentUser?.role === 'admin'"
+      variant="text"
+      @click="goManageProduct"
+    >
+      Manage Products
+    </v-btn>
 
-        <select v-model="productStore.sortBy">
-            <option value="">Sort</option>
-            <option value="priceLow">Low->High</option>
-            <option value="priceHigh">High->Low</option>
-        </select>
+    <v-spacer></v-spacer>
 
-    </div>
+    <v-text-field
+      v-model="productStore.search"
+      @input="debouncedSearch"
+      label="Search"
+      variant="outlined"
+      density="compact"
+      hide-details
+      style="max-width:250px"
+      class="mr-4"
+    ></v-text-field>
 
-    <div class="nav-user">
 
-        <span v-if="userStore.currentUser">
-            {{ userStore.currentUser.username }}
-        </span>
+    <v-select
+      v-model="productStore.sortBy"
+      :items="[
+        { title: 'Filter', value: '' },
+        { title: 'Low → High', value: 'priceLow' },
+        { title: 'High → Low', value: 'priceHigh' }
+      ]"
+      variant="outlined"
+      density="compact"
+      hide-details
+      style="max-width:180px"
+      class="mr-4"
+    ></v-select>
 
-        <button
-            v-if="!userStore.currentUser"
-            @click="goLogin">
-            Login
-        </button>
 
-        <button
-            v-else
-            @click="logout">
-            Logout
-        </button>
+    <v-chip
+      v-if="userStore.currentUser"
+      text-color="primary"
+      class="mr-3"
+    >
+      {{ userStore.currentUser.username }}
+    </v-chip>
+    <v-btn
+      v-if="!userStore.currentUser"
+      color="white"
+      variant="outlined"
+      @click="goLogin"
+    >
+      Login
+    </v-btn>
 
-    </div>
+    <v-btn
+      v-else
+      color="white"
+      variant="outlined"
+      @click="logout"
+    >
+      Logout
+    </v-btn>
 
-</nav>
+  </v-app-bar>
+
 </template>

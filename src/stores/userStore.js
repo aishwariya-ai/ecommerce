@@ -12,11 +12,13 @@ export const useUserStore = defineStore("user",
         async login(username, password) {
     const response = await api.get(`/users?username=${username}&password=${password}`
     );
-
     if (response.data.length > 0) 
         {
         this.currentUser = response.data[0];
-            localStorage.setItem("currentUser",JSON.stringify(this.currentUser));
+        localStorage.setItem("currentUser",JSON.stringify(this.currentUser));
+
+        const faketokens="fake-jwt-token@123";
+        localStorage.setItem("token",faketokens);
 
                 return true;
             }
@@ -24,7 +26,8 @@ export const useUserStore = defineStore("user",
         },
 
         logout() {
-            localStorage.removeItem("currentUser")
+            localStorage.removeItem("currentUser");
+            localStorage.removeItem("token");
             this.currentUser = null;
         },
         restoreUser()
